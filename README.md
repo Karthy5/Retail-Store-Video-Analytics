@@ -1,240 +1,179 @@
-# Retail Store Video Analytics: Customer Behavior Tracking & Insights
+# AI-Driven Retail Analytics System (Intel Industrial Training Project)
 
 **Author:** Karthik Raj S.
 
-## Overview
+## Project Overview
 
-This project implements an AI system designed to enhance the in-store customer experience in brick-and-mortar retail settings. It utilizes real-time video analytics from camera feeds to track customer movement, count specific objects (e.g., bottles), recognize customer actions, and analyze behavior patterns. The system logs processed data to a MongoDB database and provides insights through a Streamlit dashboard, addressing challenges faced by traditional retail in competing with personalized e-commerce experiences.
+This project is submitted as part of the **Intel Industrial Training Program**, addressing **Problem Statement 4: Enhancing Customer Experience with AI-Driven Insights**.
 
-## Problem Statement Addressed
+The goal is to create an AI system that leverages real-time video analytics from in-store cameras to understand customer behavior and provide actionable business insights. The system tracks customer movement, analyzes actions, monitors product interaction (specifically bottle counts in this implementation), and presents findings through an interactive dashboard.
 
-This project directly tackles **Problem Statement 4: Enhancing Customer Experience with AI-Driven Insights**.
+**Key Innovation:** A core component of this project is a **custom Action Recognition model (`best_action_model.pth`)**, developed entirely by the author. This involved:
+*   Creating a **custom dataset** comprising 150 videos relevant to retail scenarios.
+*   Designing and training a **unique neural network architecture** (using PyTorch) specifically for recognizing actions like "reaching," "standing," and "walking" within the store environment.
+*   *Currently authoring a research paper on this model and dataset for potential publication in a conference or journal.*
 
-<details><summary>Click to expand Problem Statement Details</summary>
+This system demonstrates a practical application of computer vision and machine learning to solve real-world retail challenges, aligning with the objectives outlined in the Intel program.
 
-**Objective:** Create an AI system that leverages real-time video analytics and customer behavior data to personalize in-store experiences.
+## Core Features
 
-**Prerequisites:**
-*   Basic understanding of computer vision and video analytics.
-*   Knowledge of AI/ML frameworks such as TensorFlow or PyTorch.
-*   Experience with Python programming and handling large datasets.
-*   Familiarity with real-time video processing tools like OpenCV.
+*   **Real-time Object Detection:** Utilizes YOLOv8 to detect `person` and `bottle` objects in video streams.
+*   **Multi-Person Tracking:** Implements a Centroid Tracker to assign unique IDs and track individuals across frames.
+*   **Custom Action Recognition:** Employs the bespoke `best_action_model.pth` (powered by MediaPipe pose estimation) to classify customer actions ("reaching", "standing", "walking").
+*   **Product Interaction Monitoring:** Tracks the count of detected bottles, calculating changes associated with customer visits (entry/exit).
+*   **Comprehensive Event Logging:** Records key events (entry, exit, position updates, actions, bottle detections, configuration) to MongoDB for persistent storage and analysis.
+*   **Interactive Dashboard:** A Streamlit application (`app.py`) provides visualization of:
+    *   Bottle count changes and visit analysis.
+    *   Store traffic patterns over time.
+    *   Distribution of observed customer actions.
+    *   Historical heatmaps for customer movement (person positions).
+    *   Historical heatmaps for product locations (bottle positions).
+*   **Local Processing & Visualization:** The core script (`ultimate.py`) can run locally, displaying the processed video feed with overlays (bounding boxes, IDs, actions) and optional real-time heatmaps.
+*   **Configuration Management:** Uses environment variables (`MONGO_URI`) for secure and flexible database connection.
 
-**Problem Description:**
-Brick-and-mortar retail stores face increasing competition from e-commerce platforms due to the lack of personalized experiences. The goal is to develop a smart AI system that:
-1.  Tracks customer movement in real-time using in-store camera feeds.
-2.  Analyzes customer behavior to identify high-traffic areas and customer preferences.
-3.  Provides actionable insights for product placements, promotional strategies, and restocking shelves.
+## Technology Stack
 
-**Expected Outcomes:**
-*   A functional prototype capable of tracking and analyzing real-time video feeds.
-*   Real-time alerts for restocking or customer assistance in under-served areas (Insights provided via dashboard).
-*   Insights for optimal product placement and promotion strategies based on behavior patterns.
+*   **Programming Language:** Python 3.x
+*   **Computer Vision:** OpenCV, MediaPipe
+*   **Object Detection:** Ultralytics YOLOv8
+*   **Deep Learning:** PyTorch (for the custom action model)
+*   **Database:** MongoDB
+*   **Dashboard:** Streamlit
+*   **Data Handling:** Pandas, NumPy
+*   **Visualization:** Plotly
+*   **Hardware:** Designed to leverage Intel Hardware (CPU/GPU/NPU where applicable, though tested on standard configurations).
 
-**Challenges Involved:**
-*   Processing multiple real-time video streams with minimal latency.
-*   Ensuring accurate detection of customer behavior in varying lighting and crowded conditions.
-*   Handling and analyzing large-scale data without overloading system resources.
+## Setup Instructions
 
-**Tools & Resources Used (Examples):**
-*   Hardware: Tested on standard PC, suitable for Intel AI PC with GPU/NPU for enhanced real-time performance.
-*   Software: OpenCV, PyTorch (YOLOv8 & Custom Action Model), MongoDB, Streamlit, Pandas, Numpy, MediaPipe.
-*   Datasets: Custom dataset for action recognition; relies on model detection capabilities for general objects/persons.
+1.  **Prerequisites:**
+    *   Python 3.8+ and Pip
+    *   Git
+    *   MongoDB instance (local or remote/cloud)
 
-</details>
-
-## Features
-
-*   **Real-time Object Detection:** Uses YOLOv8 to detect persons and target objects (default: "bottle") in video streams.
-*   **Multi-Person Tracking:** Employs a Centroid Tracker to assign and maintain unique IDs for detected persons across frames.
-*   **Target Object Counting:** Counts the occurrences of the specified target object (e.g., bottles on a shelf) in each frame.
-*   **Visit Analysis:** Calculates changes in target object count between a customer's entry and exit.
-*   **Action Recognition (Optional):** Leverages MediaPipe for pose estimation and a custom PyTorch TSM-based model (`best_action_model.pth`) trained by Karthik Raj S. to classify actions like "standing", "walking", "reaching".
-*   **Face Detection (Optional):** Includes an option to use a Caffe-based face detector within tracked person bounding boxes.
-*   **Data Logging:** Records events (entry, exit, position updates, actions, bottle detections, camera config) with timestamps to a MongoDB database.
-*   **Local Processing & Visualization (`realtime_feed.py`):**
-    *   Processes video from file or webcam.
-    *   Displays the video feed with bounding boxes, tracking IDs, detected actions, FPS, and bottle counts.
-    *   Optionally overlays real-time heatmaps for person and bottle locations.
-*   **Web Dashboard (`app.py`):**
-    *   Connects to the MongoDB database.
-    *   Visualizes historical data using Streamlit and Plotly.
-    *   Displays metrics on bottle count changes, total visits, average change per visit.
-    *   Shows traffic patterns (entries over time).
-    *   Presents action distribution charts.
-    *   Generates historical heatmaps for customer positions and bottle locations based on logged data.
-    *   Allows filtering by date range and Camera ID.
-
-## System Architecture
-
-
-+--------------+ +-----------------------------------------+ +-----------+ +-----------------------------------------+ +----------------+
-| Video Source | ----> | realtime_feed.py | ----> | MongoDB | <---- | app.py | ----> | User |
-| (Webcam/File)| | (Detection, Tracking, Counting, Action) | | Database | | (Streamlit Dashboard, Data Fetch, Viz) | | (View Dashboard)|
-| | | (Optional Display + Heatmaps) | | | | | | |
-| | | (DB Logging) | | | | | | |
-+--------------+ +-----------------------------------------+ +-----------+ +-----------------------------------------+ +----------------+
-
-## Demo
-
-*(You can add screenshots of `realtime_feed.py` running and the Streamlit dashboard here.)*
-
-A snapshot of the Streamlit dashboard interface is included as `Retail AI Analytics Dashboard.mhtml`. To see the live dashboard, run `app.py`.
-
-## Prerequisites
-
-*   **Python:** 3.8 or higher recommended.
-*   **MongoDB:** A running instance (local or remote). Get it from [https://www.mongodb.com/](https://www.mongodb.com/).
-*   **Python Libraries:** See `requirements.txt`. Install using `pip install -r requirements.txt`.
-*   **Hardware:** A standard PC. A GPU (NVIDIA with CUDA) is highly recommended for `realtime_feed.py` for real-time performance, especially with action recognition enabled.
-*   **Model Files:**
-    *   **YOLOv8:** Weights (`.pt` file like `yolov8n.pt`). Downloadable from Ultralytics or automatically downloaded on first run if needed.
-    *   **Action Recognition Model:** Requires `best_action_model.pth` (provided by Karthik Raj S.). Place it where specified by the `--action_model_path` argument (or modify the default if needed).
-    *   **Face Detector (Optional):** Requires `deploy.prototxt` and `res10_300x300_ssd_iter_140000.caffemodel`. Place them in a `models` directory or as specified by arguments.
-
-## Setup
-
-1.  **Clone the Repository:**
+2.  **Clone Repository:**
     ```bash
-    git clone <your-repository-url>
-    cd <your-repository-name>
+    git clone <your-repo-url>
+    cd <your-repo-directory>
     ```
-2.  **Create a Virtual Environment (Recommended):**
+
+3.  **Create Virtual Environment (Recommended):**
     ```bash
     python -m venv venv
     # On Windows
-    venv\Scripts\activate
+    .\venv\Scripts\activate
     # On macOS/Linux
     source venv/bin/activate
     ```
-3.  **Install Dependencies:**
+
+4.  **Install Dependencies:**
+    *   *(Self-note: Ensure you create a `requirements.txt` file using `pip freeze > requirements.txt` in your activated environment after installing everything)*
     ```bash
     pip install -r requirements.txt
     ```
-    *(Note: You might need to create `requirements.txt` first using `pip freeze > requirements.txt` after installing packages manually if it's not included.)*
 
-4.  **Set up MongoDB:** Ensure your MongoDB server is running.
+5.  **Download/Place Models:**
+    *   **YOLOv8:** The script defaults to `yolov8n.pt` or `yolov8s.pt`. If these are not automatically downloaded by `ultralytics`, download the desired weights file (e.g., from [https://github.com/ultralytics/ultralytics](https://github.com/ultralytics/ultralytics)) and place it in the project root or provide the path via argument.
+    *   **Face Detector (Optional):** The script uses default paths (`models/deploy.prototxt`, `models/res10_300x300_ssd_iter_140000.caffemodel`). If you wish to use face detection, create a `models` directory and place these Caffe model files inside. You can often find these online (search for the filenames).
+    *   **Custom Action Model:** Place your trained `best_action_model.pth` file in the project root or specify its path using the `--action_model_path` argument when running `ultimate.py`. **This model is crucial for the action recognition feature.**
 
-5.  **Place Model Files:**
-    *   Create a `models` directory if it doesn't exist.
-    *   Place the optional face detector files (`deploy.prototxt`, `*.caffemodel`) inside `models/`.
-    *   Place your custom `best_action_model.pth` file in a suitable location (e.g., `models/`) and note the path for the command-line argument.
-    *   YOLOv8 models might be downloaded automatically by `ultralytics` or you can place a specific `.pt` file.
+6.  **Configure MongoDB:**
+    *   **Default:** The scripts default to connecting to `mongodb://localhost:27017/`. If you have a local MongoDB running on the default port without authentication, no further action is needed.
+    *   **Remote/Authenticated:** For connecting to a different host, port, or an authenticated database (e.g., MongoDB Atlas), **set the `MONGO_URI` environment variable** before running the scripts.
+        ```bash
+        # Example on Linux/macOS
+        export MONGO_URI="mongodb+srv://<username>:<password>@<your-cluster-url>/<db-name>?retryWrites=true&w=majority"
+        # Example on Windows (Command Prompt)
+        set MONGO_URI="mongodb+srv://<username>:<password>@<your-cluster-url>/<db-name>?retryWrites=true&w=majority"
+        # Example on Windows (PowerShell)
+        $env:MONGO_URI="mongodb+srv://<username>:<password>@<your-cluster-url>/<db-name>?retryWrites=true&w=majority"
+        ```
+        Replace the placeholders with your actual credentials and cluster details. Both `ultimate.py` and `app.py` will use this environment variable.
 
-6.  **Configure Database Connection:**
-    *   **Crucially:** The scripts connect to MongoDB using the `MONGO_URI` environment variable. If it's not set, they default to `mongodb://localhost:27017/`.
-    *   For local default MongoDB (no auth): No action needed.
-    *   For remote or authenticated MongoDB: **Set the `MONGO_URI` environment variable** before running the scripts.
-        *   **Linux/macOS:**
-            ```bash
-            export MONGO_URI="mongodb://<user>:<password>@<host>:<port>/"
-            ```
-        *   **Windows (Command Prompt):**
-            ```bash
-            set MONGO_URI="mongodb://<user>:<password>@<host>:<port>/"
-            ```
-        *   **Windows (PowerShell):**
-            ```bash
-            $env:MONGO_URI="mongodb://<user>:<password>@<host>:<port>/"
-            ```
-    *   **Never hardcode sensitive connection strings directly in the code!**
+## Usage
 
-## Running the Application
+Ensure your MongoDB instance is running and accessible, and the `MONGO_URI` is set correctly if needed.
 
-### 1. Local Processing (`realtime_feed.py`)
+1.  **Run Local Real-time Analysis (`ultimate.py`):**
+    *   This script processes a video source, performs detection/tracking/action recognition, logs data to MongoDB, and optionally displays the output.
+    *   **From Webcam (Index 0):**
+        ```bash
+        python ultimate.py --action_model_path best_action_model.pth [--show_heatmaps]
+        ```
+    *   **From Video File:**
+        ```bash
+        python ultimate.py --input_video path/to/your/video.mp4 --action_model_path best_action_model.pth [--show_heatmaps] [--no_display]
+        ```
+    *   **Key Arguments:**
+        *   `--input_video`: Path to video file (uses webcam if omitted).
+        *   `--cam_index`: Webcam index (default 0).
+        *   `--yolo_model`: Path to YOLO model (default `yolov8n.pt`).
+        *   `--action_model_path`: **Required** Path to your custom action model (`best_action_model.pth`).
+        *   `--face_prototxt`, `--face_weights`: Paths for optional face detection.
+        *   `--no_display`: Run without showing the video window (headless analysis/logging).
+        *   `--show_heatmaps`: Overlay real-time heatmaps on the displayed video (requires display).
+        *   `--device`: Set processing device (`auto`, `cpu`, `cuda`).
 
-This script processes video input, performs analysis, optionally displays output, and logs data to MongoDB.
+2.  **Launch the Analytics Dashboard (`app.py`):**
+    *   This script runs a web server to display the Streamlit dashboard using data from MongoDB.
+    *   **Run the command:**
+        ```bash
+        streamlit run app.py
+        ```
+    *   Open your web browser and navigate to the local URL provided by Streamlit (usually `http://localhost:8501`).
+    *   Use the sidebar controls to filter data by date range and Camera ID.
 
-**Examples:**
+## Project Structure
 
-*   **Run with webcam (index 0), display output, no action/face models:**
-    ```bash
-    python realtime_feed.py
-    ```
-*   **Run with webcam, display output, enable heatmaps:**
-    ```bash
-    python realtime_feed.py --show_heatmaps
-    ```
-*   **Run with video file, display output, enable action recognition:**
-    ```bash
-    python realtime_feed.py --input_video path/to/your/video.mp4 --action_model_path models/best_action_model.pth
-    ```
-*   **Run with video file, NO display (headless logging), YOLO-Nano, custom confidence:**
-    ```bash
-    python realtime_feed.py --input_video path/to/your/video.mp4 --no_display --yolo_model yolov8n.pt --yolo_conf 0.3
-    ```
-*   **Run with webcam, enable face detection (ensure models are in `models/`):**
-    ```bash
-    python realtime_feed.py --face_prototxt models/deploy.prototxt --face_weights models/res10_300x300_ssd_iter_140000.caffemodel
-    ```
 
-Use `python realtime_feed.py --help` to see all available options. Press 'q' in the display window to quit.
+.
+├── ultimate.py # Main script for real-time video processing and logging
+├── app.py # Streamlit dashboard application
+├── best_action_model.pth # YOUR custom-trained action recognition model
+├── models/ # Optional: Directory for face detector models
+│ ├── deploy.prototxt
+│ └── res10_300x300_ssd_iter_140000.caffemodel
+├── Retail AI Analytics Dashboard.mhtml # Static snapshot of the dashboard UI
+├── requirements.txt # Python dependencies
+└── README.md # This file
 
-### 2. Streamlit Dashboard (`app.py`)
+## Dashboard Demonstration
 
-This script runs a web server to display the analytics dashboard based on data in MongoDB.
+A static representation of the Streamlit dashboard UI is included as `Retail AI Analytics Dashboard.mhtml`. This file can be opened in a web browser to get a visual impression of the dashboard's layout and features. For the live, interactive experience, please run `app.py`.
 
-**Run:**
-```bash
-streamlit run app.py
+*(Optional: Consider adding a few key screenshots of the dashboard here or a GIF if possible.)*
+
+## Future Work & Potential Enhancements
+
+*   **Advanced Action Recognition:** Expand the custom model to recognize more nuanced behaviors (e.g., product examination, dwell time near specific shelves).
+*   **Real-time Alerting:** Implement triggers based on insights (e.g., low bottle count alert, potential assistance needed based on prolonged dwell time).
+*   **POS Integration:** Correlate visit data and bottle changes with actual sales data for deeper insights.
+*   **Performance Optimization:** Further optimize processing pipelines, potentially leveraging Intel NPU/GPU capabilities more explicitly.
+*   **Scalability:** Architect for handling feeds from numerous cameras simultaneously (e.g., using message queues, distributed processing).
+*   **Cloud Deployment:** Package the system for deployment on cloud platforms.
+
+## Acknowledgments
+
+This project was developed as part of the Intel Industrial Training Program. I appreciate the opportunity provided by Intel to work on this challenging and relevant problem statement.
 IGNORE_WHEN_COPYING_START
 content_copy
 download
 Use code with caution.
 IGNORE_WHEN_COPYING_END
 
-Navigate to the local URL provided by Streamlit in your web browser. Ensure realtime_feed.py has run previously to populate the database with some data.
+Key things this README does for you:
 
-Custom Action Recognition Model
+Highlights Intel Unnati: Immediately sets the context for the reviewers.
 
-The optional action recognition feature uses a custom model (best_action_model.pth) developed by the author, Karthik Raj S.
+Emphasizes Your Custom Model: Calls out the best_action_model.pth, your dataset creation, and the paper-writing effort prominently in the overview. This is your unique selling point.
 
-Architecture: Based on Temporal Shift Modules (TSM), defined in realtime_feed.py (EnhancedTSM, ActionRecognitionModel).
+Clearly Maps to Problem Statement: Explicitly mentions Problem Statement 4 and links features back to its objectives.
 
-Training Data: Trained on a custom dataset of ~150 videos capturing relevant actions (standing, walking, reaching).
+Professional Structure: Follows standard README conventions.
 
-Status: This model is part of ongoing research aimed at publication in a conference or journal.
+Detailed Setup & Usage: Provides clear instructions for others (and reviewers) to potentially run your code. Crucially explains the model requirements and MONGO_URI.
 
-To use it, provide the path to best_action_model.pth via the --action_model_path argument when running realtime_feed.py.
+Explains Project Files: Gives context to each major file.
 
-Future Work / Potential Improvements
+Includes Future Work: Shows you've thought beyond the current implementation.
 
-Implement real-time alert mechanisms based on insights (e.g., low bottle count, specific actions detected).
-
-Scale the system for multiple simultaneous camera feeds.
-
-Deploy to cloud infrastructure for wider accessibility.
-
-Enhance dashboard with more sophisticated analytics and filtering options.
-
-Improve model accuracy and robustness (ongoing).
-
-Integrate with store inventory or POS systems.
-
-License
-
-(Choose a license, e.g., MIT, Apache 2.0, and add the corresponding LICENSE file to your repository)
-
-Example: This project is licensed under the MIT License - see the LICENSE file for details.
-
-Contact & Citation
-
-Karthik Raj S. - (Optionally add contact info like LinkedIn profile or email)
-
-If you use this code or the custom action model in your research, please consider citing this repository and acknowledging the author's work, especially concerning the action recognition model currently under research for publication.
-
-**Before Committing:**
-
-1.  **Create `requirements.txt`:** If you haven't already, activate your virtual environment and run:
-    ```bash
-    pip freeze > requirements.txt
-    ```
-2.  **Add a LICENSE file:** Choose an open-source license (like MIT or Apache 2.0), create a file named `LICENSE`, and paste the license text into it. Update the "License" section in the README accordingly.
-3.  **Add Screenshots:** Replace the placeholder text with actual screenshots of your application running.
-4.  **Verify Paths:** Double-check that the default paths mentioned (like for face models in `models/`) match your intended structure or update the README/code arguments.
-5.  **Review:** Read through the generated README one last time to ensure accuracy and clarity.
-IGNORE_WHEN_COPYING_START
-content_copy
-download
-Use code with caution.
-IGNORE_WHEN_COPYING_END
+Remember to generate the requirements.txt file and ensure best_action_model.pth is included in the repository when you upload it! Good luck with your submission, Karthik!
