@@ -9,7 +9,7 @@ This project is submitted as part of the **Intel Industrial Training Program**, 
 The goal is to create an AI system that leverages real-time video analytics from in-store cameras to understand customer behavior and provide actionable business insights. The system tracks customer movement, analyzes actions, monitors product interaction (specifically bottle counts in this implementation), and presents findings through an interactive dashboard.
 
 **Key Innovation:** A core component of this project is a **custom Action Recognition model (`best_action_model.pth`)**, developed entirely by the author. This involved:
-*   Creating a **custom dataset** comprising 150 videos relevant to retail scenarios.
+*   Single-handedly creating a **custom dataset** comprising 150 videos relevant to retail scenarios.
 *   Designing and training a **unique neural network architecture** (using PyTorch) specifically for recognizing actions like "reaching," "standing," and "walking" within the store environment.
 *   *Currently authoring a research paper on this model and dataset for potential publication in a conference or journal.*
 
@@ -66,7 +66,6 @@ This system demonstrates a practical application of computer vision and machine 
     ```
 
 4.  **Install Dependencies:**
-    *   *(Self-note: Ensure you create a `requirements.txt` file using `pip freeze > requirements.txt` in your activated environment after installing everything)*
     ```bash
     pip install -r requirements.txt
     ```
@@ -74,7 +73,7 @@ This system demonstrates a practical application of computer vision and machine 
 5.  **Download/Place Models:**
     *   **YOLOv8:** The script defaults to `yolov8n.pt` or `yolov8s.pt`. If these are not automatically downloaded by `ultralytics`, download the desired weights file (e.g., from [https://github.com/ultralytics/ultralytics](https://github.com/ultralytics/ultralytics)) and place it in the project root or provide the path via argument.
     *   **Face Detector (Optional):** The script uses default paths (`models/deploy.prototxt`, `models/res10_300x300_ssd_iter_140000.caffemodel`). If you wish to use face detection, create a `models` directory and place these Caffe model files inside. You can often find these online (search for the filenames).
-    *   **Custom Action Model:** Place your trained `best_action_model.pth` file in the project root or specify its path using the `--action_model_path` argument when running `realtime_feed.py`. **This model is crucial for the action recognition feature.**
+    *   **Custom Action Model:** Place your pre-trained `best_action_model.pth` file in the project root or specify its path using the `--action_model_path` argument when running `realtime_feed.py`. **This model is crucial for the action recognition feature.**
 
 6.  **Configure MongoDB:**
     *   **Default:** The scripts default to connecting to `mongodb://localhost:27017/`. If you have a local MongoDB running on the default port without authentication, no further action is needed.
@@ -128,7 +127,7 @@ Ensure your MongoDB instance is running and accessible, and the `MONGO_URI` is s
 .
 ├── realtime_feed.py # Main script for real-time video processing and logging
 ├── app.py # Streamlit dashboard application
-├── best_action_model.pth # YOUR custom-trained action recognition model
+├── best_action_model.pth # Custom action recognition model
 ├── models/ # Optional: Directory for face detector models
 │ ├── deploy.prototxt
 │ └── res10_300x300_ssd_iter_140000.caffemodel
