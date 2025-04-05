@@ -52,7 +52,7 @@ Brick-and-mortar retail stores face increasing competition from e-commerce platf
 *   **Action Recognition (Optional):** Leverages MediaPipe for pose estimation and a custom PyTorch TSM-based model (`best_action_model.pth`) trained by Karthik Raj S. to classify actions like "standing", "walking", "reaching".
 *   **Face Detection (Optional):** Includes an option to use a Caffe-based face detector within tracked person bounding boxes.
 *   **Data Logging:** Records events (entry, exit, position updates, actions, bottle detections, camera config) with timestamps to a MongoDB database.
-*   **Local Processing & Visualization (`ultimate.py`):**
+*   **Local Processing & Visualization (`realtime_feed.py`):**
     *   Processes video from file or webcam.
     *   Displays the video feed with bounding boxes, tracking IDs, detected actions, FPS, and bottle counts.
     *   Optionally overlays real-time heatmaps for person and bottle locations.
@@ -69,7 +69,7 @@ Brick-and-mortar retail stores face increasing competition from e-commerce platf
 
 
 +--------------+ +-----------------------------------------+ +-----------+ +-----------------------------------------+ +----------------+
-| Video Source | ----> | ultimate.py | ----> | MongoDB | <---- | app.py | ----> | User |
+| Video Source | ----> | realtime_feed.py | ----> | MongoDB | <---- | app.py | ----> | User |
 | (Webcam/File)| | (Detection, Tracking, Counting, Action) | | Database | | (Streamlit Dashboard, Data Fetch, Viz) | | (View Dashboard)|
 | | | (Optional Display + Heatmaps) | | | | | | |
 | | | (DB Logging) | | | | | | |
@@ -77,7 +77,7 @@ Brick-and-mortar retail stores face increasing competition from e-commerce platf
 
 ## Demo
 
-*(You can add screenshots of `ultimate.py` running and the Streamlit dashboard here.)*
+*(You can add screenshots of `realtime_feed.py` running and the Streamlit dashboard here.)*
 
 A snapshot of the Streamlit dashboard interface is included as `Retail AI Analytics Dashboard.mhtml`. To see the live dashboard, run `app.py`.
 
@@ -86,7 +86,7 @@ A snapshot of the Streamlit dashboard interface is included as `Retail AI Analyt
 *   **Python:** 3.8 or higher recommended.
 *   **MongoDB:** A running instance (local or remote). Get it from [https://www.mongodb.com/](https://www.mongodb.com/).
 *   **Python Libraries:** See `requirements.txt`. Install using `pip install -r requirements.txt`.
-*   **Hardware:** A standard PC. A GPU (NVIDIA with CUDA) is highly recommended for `ultimate.py` for real-time performance, especially with action recognition enabled.
+*   **Hardware:** A standard PC. A GPU (NVIDIA with CUDA) is highly recommended for `realtime_feed.py` for real-time performance, especially with action recognition enabled.
 *   **Model Files:**
     *   **YOLOv8:** Weights (`.pt` file like `yolov8n.pt`). Downloadable from Ultralytics or automatically downloaded on first run if needed.
     *   **Action Recognition Model:** Requires `best_action_model.pth` (provided by Karthik Raj S.). Place it where specified by the `--action_model_path` argument (or modify the default if needed).
@@ -141,7 +141,7 @@ A snapshot of the Streamlit dashboard interface is included as `Retail AI Analyt
 
 ## Running the Application
 
-### 1. Local Processing (`ultimate.py`)
+### 1. Local Processing (`realtime_feed.py`)
 
 This script processes video input, performs analysis, optionally displays output, and logs data to MongoDB.
 
@@ -149,26 +149,26 @@ This script processes video input, performs analysis, optionally displays output
 
 *   **Run with webcam (index 0), display output, no action/face models:**
     ```bash
-    python ultimate.py
+    python realtime_feed.py
     ```
 *   **Run with webcam, display output, enable heatmaps:**
     ```bash
-    python ultimate.py --show_heatmaps
+    python realtime_feed.py --show_heatmaps
     ```
 *   **Run with video file, display output, enable action recognition:**
     ```bash
-    python ultimate.py --input_video path/to/your/video.mp4 --action_model_path models/best_action_model.pth
+    python realtime_feed.py --input_video path/to/your/video.mp4 --action_model_path models/best_action_model.pth
     ```
 *   **Run with video file, NO display (headless logging), YOLO-Nano, custom confidence:**
     ```bash
-    python ultimate.py --input_video path/to/your/video.mp4 --no_display --yolo_model yolov8n.pt --yolo_conf 0.3
+    python realtime_feed.py --input_video path/to/your/video.mp4 --no_display --yolo_model yolov8n.pt --yolo_conf 0.3
     ```
 *   **Run with webcam, enable face detection (ensure models are in `models/`):**
     ```bash
-    python ultimate.py --face_prototxt models/deploy.prototxt --face_weights models/res10_300x300_ssd_iter_140000.caffemodel
+    python realtime_feed.py --face_prototxt models/deploy.prototxt --face_weights models/res10_300x300_ssd_iter_140000.caffemodel
     ```
 
-Use `python ultimate.py --help` to see all available options. Press 'q' in the display window to quit.
+Use `python realtime_feed.py --help` to see all available options. Press 'q' in the display window to quit.
 
 ### 2. Streamlit Dashboard (`app.py`)
 
@@ -183,19 +183,19 @@ download
 Use code with caution.
 IGNORE_WHEN_COPYING_END
 
-Navigate to the local URL provided by Streamlit in your web browser. Ensure ultimate.py has run previously to populate the database with some data.
+Navigate to the local URL provided by Streamlit in your web browser. Ensure realtime_feed.py has run previously to populate the database with some data.
 
 Custom Action Recognition Model
 
 The optional action recognition feature uses a custom model (best_action_model.pth) developed by the author, Karthik Raj S.
 
-Architecture: Based on Temporal Shift Modules (TSM), defined in ultimate.py (EnhancedTSM, ActionRecognitionModel).
+Architecture: Based on Temporal Shift Modules (TSM), defined in realtime_feed.py (EnhancedTSM, ActionRecognitionModel).
 
 Training Data: Trained on a custom dataset of ~150 videos capturing relevant actions (standing, walking, reaching).
 
 Status: This model is part of ongoing research aimed at publication in a conference or journal.
 
-To use it, provide the path to best_action_model.pth via the --action_model_path argument when running ultimate.py.
+To use it, provide the path to best_action_model.pth via the --action_model_path argument when running realtime_feed.py.
 
 Future Work / Potential Improvements
 
