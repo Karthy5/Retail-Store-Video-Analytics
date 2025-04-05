@@ -159,21 +159,3 @@ content_copy
 download
 Use code with caution.
 IGNORE_WHEN_COPYING_END
-
-Key things this README does for you:
-
-Highlights Intel Unnati: Immediately sets the context for the reviewers.
-
-Emphasizes Your Custom Model: Calls out the best_action_model.pth, your dataset creation, and the paper-writing effort prominently in the overview. This is your unique selling point.
-
-Clearly Maps to Problem Statement: Explicitly mentions Problem Statement 4 and links features back to its objectives.
-
-Professional Structure: Follows standard README conventions.
-
-Detailed Setup & Usage: Provides clear instructions for others (and reviewers) to potentially run your code. Crucially explains the model requirements and MONGO_URI.
-
-Explains Project Files: Gives context to each major file.
-
-Includes Future Work: Shows you've thought beyond the current implementation.
-
-Remember to generate the requirements.txt file and ensure best_action_model.pth is included in the repository when you upload it! Good luck with your submission, Karthik!
