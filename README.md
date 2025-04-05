@@ -28,7 +28,7 @@ This system demonstrates a practical application of computer vision and machine 
     *   Distribution of observed customer actions.
     *   Historical heatmaps for customer movement (person positions).
     *   Historical heatmaps for product locations (bottle positions).
-*   **Local Processing & Visualization:** The core script (`ultimate.py`) can run locally, displaying the processed video feed with overlays (bounding boxes, IDs, actions) and optional real-time heatmaps.
+*   **Local Processing & Visualization:** The core script (`realtime_feed.py`) can run locally, displaying the processed video feed with overlays (bounding boxes, IDs, actions) and optional real-time heatmaps.
 *   **Configuration Management:** Uses environment variables (`MONGO_URI`) for secure and flexible database connection.
 
 ## Technology Stack
@@ -74,7 +74,7 @@ This system demonstrates a practical application of computer vision and machine 
 5.  **Download/Place Models:**
     *   **YOLOv8:** The script defaults to `yolov8n.pt` or `yolov8s.pt`. If these are not automatically downloaded by `ultralytics`, download the desired weights file (e.g., from [https://github.com/ultralytics/ultralytics](https://github.com/ultralytics/ultralytics)) and place it in the project root or provide the path via argument.
     *   **Face Detector (Optional):** The script uses default paths (`models/deploy.prototxt`, `models/res10_300x300_ssd_iter_140000.caffemodel`). If you wish to use face detection, create a `models` directory and place these Caffe model files inside. You can often find these online (search for the filenames).
-    *   **Custom Action Model:** Place your trained `best_action_model.pth` file in the project root or specify its path using the `--action_model_path` argument when running `ultimate.py`. **This model is crucial for the action recognition feature.**
+    *   **Custom Action Model:** Place your trained `best_action_model.pth` file in the project root or specify its path using the `--action_model_path` argument when running `realtime_feed.py`. **This model is crucial for the action recognition feature.**
 
 6.  **Configure MongoDB:**
     *   **Default:** The scripts default to connecting to `mongodb://localhost:27017/`. If you have a local MongoDB running on the default port without authentication, no further action is needed.
@@ -87,21 +87,21 @@ This system demonstrates a practical application of computer vision and machine 
         # Example on Windows (PowerShell)
         $env:MONGO_URI="mongodb+srv://<username>:<password>@<your-cluster-url>/<db-name>?retryWrites=true&w=majority"
         ```
-        Replace the placeholders with your actual credentials and cluster details. Both `ultimate.py` and `app.py` will use this environment variable.
+        Replace the placeholders with your actual credentials and cluster details. Both `realtime_feed.py` and `app.py` will use this environment variable.
 
 ## Usage
 
 Ensure your MongoDB instance is running and accessible, and the `MONGO_URI` is set correctly if needed.
 
-1.  **Run Local Real-time Analysis (`ultimate.py`):**
+1.  **Run Local Real-time Analysis (`realtime_feed.py`):**
     *   This script processes a video source, performs detection/tracking/action recognition, logs data to MongoDB, and optionally displays the output.
     *   **From Webcam (Index 0):**
         ```bash
-        python ultimate.py --action_model_path best_action_model.pth [--show_heatmaps]
+        python realtime_feed.py --action_model_path best_action_model.pth [--show_heatmaps]
         ```
     *   **From Video File:**
         ```bash
-        python ultimate.py --input_video path/to/your/video.mp4 --action_model_path best_action_model.pth [--show_heatmaps] [--no_display]
+        python realtime_feed.py --input_video path/to/your/video.mp4 --action_model_path best_action_model.pth [--show_heatmaps] [--no_display]
         ```
     *   **Key Arguments:**
         *   `--input_video`: Path to video file (uses webcam if omitted).
@@ -126,7 +126,7 @@ Ensure your MongoDB instance is running and accessible, and the `MONGO_URI` is s
 
 
 .
-├── ultimate.py # Main script for real-time video processing and logging
+├── realtime_feed.py # Main script for real-time video processing and logging
 ├── app.py # Streamlit dashboard application
 ├── best_action_model.pth # YOUR custom-trained action recognition model
 ├── models/ # Optional: Directory for face detector models
