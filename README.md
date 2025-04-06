@@ -51,11 +51,7 @@ This system demonstrates a practical application of computer vision and machine 
     *   Git
     *   MongoDB instance (local or remote/cloud)
 
-2.  **Clone Repository:**
-    ```bash
-    git clone <your-repo-url>
-    cd <your-repo-directory>
-    ```
+2.  **Clone Repository**
 
 3.  **Create Virtual Environment (Recommended):**
     ```bash
