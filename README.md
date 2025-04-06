@@ -8,7 +8,8 @@ This project is submitted as part of the **Intel Industrial Training Program**, 
 
 The goal is to create an AI system that leverages real-time video analytics from in-store cameras to understand customer behavior and provide actionable business insights. The system tracks customer movement, analyzes actions, monitors product interaction (specifically bottle counts in this implementation), and presents findings through an interactive dashboard.
 
-**Key Innovation:** A core component of this project is **JATE (Joint-Aware-Temporal-Encoder), a custom Action Recognition model (`jate_model.pth`)**, developed entirely by the author. This involved:
+## Key Innovation
+A core component of this project is **JATE (Joint-Aware-Temporal-Encoder), a custom Action Recognition model (`jate_model.pth`)**, developed entirely by the author. This involved:
 *   Single-handedly creating a **custom dataset** comprising 150 videos relevant to retail scenarios.
 *   Designing and training a **unique neural network architecture** (using PyTorch) specifically for recognizing actions like "reaching," "standing," and "walking" within the store environment.
 *   *Currently authoring a research paper on this model and dataset for potential publication in a conference or journal.*
