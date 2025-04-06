@@ -1,4 +1,4 @@
-![image](https://github.com/user-attachments/assets/46dacfcb-b6b9-401f-90cf-5f3673795420)# AI-Driven Retail Analytics System (Intel Industrial Training Project)
+## AI-Driven Retail Analytics System (Intel Industrial Training Project)
 
 **Author:** Karthik Raj S.
 
