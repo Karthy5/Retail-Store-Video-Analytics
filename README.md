@@ -26,6 +26,15 @@ A core component of this project is **JATE (Joint-Aware-Temporal-Encoder), a cus
 
 This system demonstrates a practical application of computer vision and machine learning to solve real-world retail challenges, aligning with the objectives outlined in the Intel program.
 
+## Dashboard Demonstration
+
+A static representation of the Streamlit dashboard UI is included as `Retail AI Analytics Dashboard.mhtml`. This file can be opened in a web browser to get a visual impression of the dashboard's layout and features. For the live, interactive experience, please run `app.py`.
+
+![alt text](https://github.com/Karthy5/Retail-Store-Video-Analytics/blob/main/Screenshots/Screenshot%202025-04-05%20230711.png?raw=true)
+![alt text](https://github.com/Karthy5/Retail-Store-Video-Analytics/blob/main/Screenshots/Screenshot%202025-04-05%20230723.png?raw=true)
+![alt text](https://github.com/Karthy5/Retail-Store-Video-Analytics/blob/main/Screenshots/Screenshot%202025-04-05%20230755.png?raw=true)
+![alt text](https://github.com/Karthy5/Retail-Store-Video-Analytics/blob/main/Screenshots/Screenshot%202025-04-05%20230824.png?raw=true)
+
 ## Core Features
 
 *   **Real-time Object Detection:** Utilizes YOLOv8 to detect `person` and `bottle` objects in video streams.
@@ -53,6 +62,10 @@ This system demonstrates a practical application of computer vision and machine 
 *   **Data Handling:** Pandas, NumPy
 *   **Visualization:** Plotly
 *   **Hardware:** Designed to leverage Intel Hardware (CPU/GPU/NPU where applicable, though tested on standard configurations).
+
+## Project Structure
+
+![alt text](https://github.com/Karthy5/Retail-Store-Video-Analytics/blob/main/Project%20Structure.png?raw=true)
 
 ## Setup Instructions
 
@@ -127,19 +140,6 @@ Ensure your MongoDB instance is running and accessible, and the `MONGO_URI` is s
         ```
     *   Open your web browser and navigate to the local URL provided by Streamlit (usually `http://localhost:8501`).
     *   Use the sidebar controls to filter data by date range and Camera ID.
-
-## Project Structure
-
-![alt text](https://github.com/Karthy5/Retail-Store-Video-Analytics/blob/main/Project%20Structure.png?raw=true)
-
-## Dashboard Demonstration
-
-A static representation of the Streamlit dashboard UI is included as `Retail AI Analytics Dashboard.mhtml`. This file can be opened in a web browser to get a visual impression of the dashboard's layout and features. For the live, interactive experience, please run `app.py`.
-
-![alt text](https://github.com/Karthy5/Retail-Store-Video-Analytics/blob/main/Screenshots/Screenshot%202025-04-05%20230711.png?raw=true)
-![alt text](https://github.com/Karthy5/Retail-Store-Video-Analytics/blob/main/Screenshots/Screenshot%202025-04-05%20230723.png?raw=true)
-![alt text](https://github.com/Karthy5/Retail-Store-Video-Analytics/blob/main/Screenshots/Screenshot%202025-04-05%20230755.png?raw=true)
-![alt text](https://github.com/Karthy5/Retail-Store-Video-Analytics/blob/main/Screenshots/Screenshot%202025-04-05%20230824.png?raw=true)
 
 ## Future Work & Potential Enhancements
 
