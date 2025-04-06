@@ -130,17 +130,7 @@ Ensure your MongoDB instance is running and accessible, and the `MONGO_URI` is s
 
 ## Project Structure
 
-
-.
-├── realtime_feed.py # Main script for real-time video processing and logging
-├── app.py # Streamlit dashboard application
-├── jate_model.pth # Custom action recognition model
-├── models/ # Optional: Directory for face detector models
-│ ├── deploy.prototxt
-│ └── res10_300x300_ssd_iter_140000.caffemodel
-├── Retail AI Analytics Dashboard.mhtml # Static snapshot of the dashboard UI
-├── requirements.txt # Python dependencies
-└── README.md # This file
+![alt text](https://github.com/Karthy5/Retail-Store-Video-Analytics/blob/main/Project%20Structure.png?raw=true)
 
 ## Dashboard Demonstration
 
