@@ -139,7 +139,10 @@ Ensure your MongoDB instance is running and accessible, and the `MONGO_URI` is s
 
 A static representation of the Streamlit dashboard UI is included as `Retail AI Analytics Dashboard.mhtml`. This file can be opened in a web browser to get a visual impression of the dashboard's layout and features. For the live, interactive experience, please run `app.py`.
 
-*(Optional: Consider adding a few key screenshots of the dashboard here or a GIF if possible.)*
+![alt text](https://github.com/Karthy5/Retail-Store-Video-Analytics/blob/main/Screenshots/Screenshot%202025-04-05%20230711.png?raw=true)
+![alt text](https://github.com/Karthy5/Retail-Store-Video-Analytics/blob/main/Screenshots/Screenshot%202025-04-05%20230723.png?raw=true)
+![alt text](https://github.com/Karthy5/Retail-Store-Video-Analytics/blob/main/Screenshots/Screenshot%202025-04-05%20230755.png?raw=true)
+![alt text](https://github.com/Karthy5/Retail-Store-Video-Analytics/blob/main/Screenshots/Screenshot%202025-04-05%20230824.png?raw=true)
 
 ## Future Work & Potential Enhancements
 
@@ -153,8 +156,4 @@ A static representation of the Streamlit dashboard UI is included as `Retail AI 
 ## Acknowledgments
 
 This project was developed as part of the Intel Industrial Training Program. I appreciate the opportunity provided by Intel to work on this challenging and relevant problem statement.
-IGNORE_WHEN_COPYING_START
-content_copy
-download
 Use code with caution.
-IGNORE_WHEN_COPYING_END
