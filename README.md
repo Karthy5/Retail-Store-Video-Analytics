@@ -13,7 +13,7 @@ A core component of this project is **JATE (Joint-Aware-Temporal-Encoder), a cus
 *   Single-handedly creating a **custom dataset** comprising 150 videos relevant to retail scenarios.
 *   Designing and training a **unique neural network architecture** (using PyTorch) specifically for recognizing actions like "reaching," "standing," and "walking" within the store environment.
 *   *Currently authoring a research paper on this model and dataset for potential publication in a conference or journal.*
-*   Link to JATE: https://github.com/Karthy5/JATE-Joint-Aware-Temporal-Encoder-
+*   Link to JATE (For model and dataset): https://github.com/Karthy5/JATE-Joint-Aware-Temporal-Encoder-
 ## JATE Demo
 1.  **Walking:**
 ![alt text](https://github.com/Karthy5/JATE-Joint-Aware-Temporal-Encoder-/blob/main/jate_working_pics/Screenshot%202025-04-06%20084601.png?raw=true)
