@@ -8,7 +8,7 @@ This project is submitted as part of the **Intel Industrial Training Program**, 
 
 The goal is to create an AI system that leverages real-time video analytics from in-store cameras to understand customer behavior and provide actionable business insights. The system tracks customer movement, analyzes actions, monitors product interaction (specifically bottle counts in this implementation), and presents findings through an interactive dashboard.
 
-**Key Innovation:** A core component of this project is a **custom Action Recognition model (`best_action_model.pth`)**, developed entirely by the author. This involved:
+**Key Innovation:** A core component of this project is a **custom Action Recognition model (`jate_model.pth`)**, developed entirely by the author. This involved:
 *   Single-handedly creating a **custom dataset** comprising 150 videos relevant to retail scenarios.
 *   Designing and training a **unique neural network architecture** (using PyTorch) specifically for recognizing actions like "reaching," "standing," and "walking" within the store environment.
 *   *Currently authoring a research paper on this model and dataset for potential publication in a conference or journal.*
@@ -19,7 +19,7 @@ This system demonstrates a practical application of computer vision and machine 
 
 *   **Real-time Object Detection:** Utilizes YOLOv8 to detect `person` and `bottle` objects in video streams.
 *   **Multi-Person Tracking:** Implements a Centroid Tracker to assign unique IDs and track individuals across frames.
-*   **Custom Action Recognition:** Employs the bespoke `best_action_model.pth` (powered by MediaPipe pose estimation) to classify customer actions ("reaching", "standing", "walking").
+*   **Custom Action Recognition:** Employs the bespoke `jate_model.pth` (powered by MediaPipe pose estimation) to classify customer actions ("reaching", "standing", "walking").
 *   **Product Interaction Monitoring:** Tracks the count of detected bottles, calculating changes associated with customer visits (entry/exit).
 *   **Comprehensive Event Logging:** Records key events (entry, exit, position updates, actions, bottle detections, configuration) to MongoDB for persistent storage and analysis.
 *   **Interactive Dashboard:** A Streamlit application (`app.py`) provides visualization of:
@@ -73,7 +73,7 @@ This system demonstrates a practical application of computer vision and machine 
 5.  **Download/Place Models:**
     *   **YOLOv8:** The script defaults to `yolov8n.pt` or `yolov8s.pt`. If these are not automatically downloaded by `ultralytics`, download the desired weights file (e.g., from [https://github.com/ultralytics/ultralytics](https://github.com/ultralytics/ultralytics)) and place it in the project root or provide the path via argument.
     *   **Face Detector (Optional):** The script uses default paths (`models/deploy.prototxt`, `models/res10_300x300_ssd_iter_140000.caffemodel`). If you wish to use face detection, create a `models` directory and place these Caffe model files inside. You can often find these online (search for the filenames).
-    *   **Custom Action Model:** Place your pre-trained `best_action_model.pth` file in the project root or specify its path using the `--action_model_path` argument when running `realtime_feed.py`. **This model is crucial for the action recognition feature.**
+    *   **Custom Action Model:** Place your pre-trained `jate_model.pth` file in the project root or specify its path using the `--action_model_path` argument when running `realtime_feed.py`. **This model is crucial for the action recognition feature.**
 
 6.  **Configure MongoDB:**
     *   **Default:** The scripts default to connecting to `mongodb://localhost:27017/`. If you have a local MongoDB running on the default port without authentication, no further action is needed.
@@ -96,17 +96,17 @@ Ensure your MongoDB instance is running and accessible, and the `MONGO_URI` is s
     *   This script processes a video source, performs detection/tracking/action recognition, logs data to MongoDB, and optionally displays the output.
     *   **From Webcam (Index 0):**
         ```bash
-        python realtime_feed.py --action_model_path best_action_model.pth [--show_heatmaps]
+        python realtime_feed.py --action_model_path jate_model.pth [--show_heatmaps]
         ```
     *   **From Video File:**
         ```bash
-        python realtime_feed.py --input_video path/to/your/video.mp4 --action_model_path best_action_model.pth [--show_heatmaps] [--no_display]
+        python realtime_feed.py --input_video path/to/your/video.mp4 --action_model_path jate_model.pth [--show_heatmaps] [--no_display]
         ```
     *   **Key Arguments:**
         *   `--input_video`: Path to video file (uses webcam if omitted).
         *   `--cam_index`: Webcam index (default 0).
         *   `--yolo_model`: Path to YOLO model (default `yolov8n.pt`).
-        *   `--action_model_path`: **Required** Path to your custom action model (`best_action_model.pth`).
+        *   `--action_model_path`: **Required** Path to your custom action model (`jate_model.pth`).
         *   `--face_prototxt`, `--face_weights`: Paths for optional face detection.
         *   `--no_display`: Run without showing the video window (headless analysis/logging).
         *   `--show_heatmaps`: Overlay real-time heatmaps on the displayed video (requires display).
@@ -127,7 +127,7 @@ Ensure your MongoDB instance is running and accessible, and the `MONGO_URI` is s
 .
 ├── realtime_feed.py # Main script for real-time video processing and logging
 ├── app.py # Streamlit dashboard application
-├── best_action_model.pth # Custom action recognition model
+├── jate_model.pth # Custom action recognition model
 ├── models/ # Optional: Directory for face detector models
 │ ├── deploy.prototxt
 │ └── res10_300x300_ssd_iter_140000.caffemodel
