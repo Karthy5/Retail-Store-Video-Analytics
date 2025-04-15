@@ -116,7 +116,7 @@ Ensure your MongoDB instance is running and accessible, and the `MONGO_URI` is s
     *   This script processes a video source, performs detection/tracking/action recognition, logs data to MongoDB, and optionally displays the output.
     *   **From Webcam (Index 0):**
         ```bash
-        python realtime_feed.py --action_model_path jate_model.pth [--show_heatmaps]
+        python realtime_feed.py --action_model_path jate_model.pth
         ```
     *   **From Video File:**
         ```bash
