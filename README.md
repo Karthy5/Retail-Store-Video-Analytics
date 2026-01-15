@@ -16,7 +16,7 @@ JATE Model Specific Metrics
 
 ## AI-Driven Retail Analytics System (Intel Industrial Training Project)
 
-**Author:** Karthik Raj S.
+**Author:** Karthik Rajen
 
 ## Project Overview
 
